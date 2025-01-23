@@ -49,7 +49,7 @@ function validate_form($post_data, $file_data)
     }
 
     if (!isset($post_data['newsletter'])) {
-        $errors['newsletter'] = "Please select a newsletter subscription option.";
+        $errors['newsletter'] = "Please select an option.";
     }
 
     if (empty($post_data['interests'])) {
@@ -93,7 +93,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Registration Form</title>
-    <link href="https://fonts.googleapis.com/css2?family=PT+Serif:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -131,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Date of Birth -->
             <div class="mb-4">
                 <label for="dob" class="block text-sm font-medium text-gray-600">Date of Birth</label>
-                <input type="date" id="dob" name="dob" class="mt-1 px-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>">
+                <input type="date" id="dob" name="dob" class="mt-1 px-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500" value="<?php echo htmlspecialchars($_POST['dob'] ?? ''); ?>" onchange="this.blur();" onkeydown="return false;">
                 <?php if (isset($errors['dob'])): ?>
                     <p class="text-red-500 text-sm"><?php echo $errors['dob']; ?></p>
                 <?php endif; ?>
