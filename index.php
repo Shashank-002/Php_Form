@@ -232,10 +232,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <!-- Interests -->
             <div class="mb-4">
                 <label for="interests" class="block text-sm font-medium text-gray-600">Interest <span class="text-red-600">*</span></label>
-                <div class="relative">
+                <div class="relative" id="dropdownContainer">
                     <button type="button" id="dropdownButton" class="mt-1 px-4 py-2 w-full border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 text-left flex justify-between items-center" onclick="toggleDropdown()">
                         <span id="selectedInterests">Select Interests</span>
-                        <span class="ml-2">&#9662;</span> <!-- Dropdown arrow icon -->
+                        <span class="ml-2">&#9662;</span>
                     </button>
                     <div id="dropdown" class="absolute hidden mt-2 w-full bg-white border border-gray-300 rounded-md shadow-lg z-10">
                         <label class="block px-4 py-2">
@@ -296,26 +296,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </body>
 <script>
-    function toggleDropdown() {
+    function toggleDropdown(event) {
         const dropdown = document.getElementById('dropdown');
         dropdown.classList.toggle('hidden');
     }
+
+    window.onclick = function(event) {
+        const dropdownContainer = document.getElementById('dropdownContainer');
+        const dropdown = document.getElementById('dropdown');
+
+        if (!dropdownContainer.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    };
 
     function updateSelectedInterests() {
         const checkboxes = document.querySelectorAll('input[name="interests[]"]:checked');
         const selectedInterests = Array.from(checkboxes).map(checkbox => checkbox.parentNode.textContent.trim()).join(', ');
         const selectedInterestsDisplay = document.getElementById('selectedInterests');
-
         selectedInterestsDisplay.textContent = selectedInterests.length > 0 ? selectedInterests : 'Select Interests';
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('#dropdownButton')) {
-            const dropdown = document.getElementById('dropdown');
-            if (!dropdown.classList.contains('hidden')) {
-                dropdown.classList.add('hidden');
-            }
-        }
     }
 
     document.getElementById('dob').addEventListener('input', function(e) {
@@ -389,7 +388,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 const isValidDate = validateDate(day, month, year);
 
                 if (!isValidDate) {
-                    this.setCustomValidity("Invalid date. Please check the day, month, and year.");
+                    this.setCustomValidity("Invalid date.");
                 } else {
                     this.setCustomValidity("");
                 }
